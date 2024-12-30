@@ -38,6 +38,20 @@ function authenticateJWT(req, res, next) {
   }
 // Insert your requireAuth Function code here.
 
+function requireAuth(req, res, next) {
+    const token = req.session.token;
+  
+    if (!token) return res.redirect('/login');
+  
+    try {
+      const decoded = jwt.verify(token, SECRET_KEY);
+      req.user = decoded;
+      next();
+    } catch (error) {
+      return res.redirect('/login');
+    }
+  }
+
 // Insert your routing HTML code here.
 
 // Insert your user registration code here.
